@@ -1,0 +1,47 @@
+{
+  "name": "mv3-parcel-webext-template",
+  "version": "0.0.0",
+  "description": "Chrome Extension boilerplate for manifest v3. With React.",
+  "scripts": {
+    "start": "parcel watch src/manifest.json --host localhost",
+    "prebuild": "rimraf dist .parcel-cache",
+    "build": "parcel build src/manifest.json --no-cache",
+    "postbuild": "node utils/remove-source-maps.mjs && node utils/create-zip.mjs",
+    "release": "dotenv release-it --"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onikienko/mv3-parcel-webext-template.git"
+  },
+  "author": "Mykhailo Onikiienko <michael.onikienko@gmail.com> (https://github.com/onikienko)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/onikienko/mv3-parcel-webext-template/issues"
+  },
+  "homepage": "https://github.com/onikienko/mv3-parcel-webext-template#readme",
+  "devDependencies": {
+    "@parcel/config-webextension": "^2.13.3",
+    "@release-it/bumper": "^7.0.1",
+    "@release-it/conventional-changelog": "^10.0.0",
+    "@types/chrome": "^0.0.299",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "filenamify": "^6.0.0",
+    "glob": "^11.0.1",
+    "opener": "^1.5.2",
+    "parcel": "^2.13.3",
+    "process": "^0.11.10",
+    "release-it": "^18.1.2",
+    "rimraf": "^6.0.1",
+    "sharp": "^0.33.5",
+    "zip-lib": "^1.0.5"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
