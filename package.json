@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "description": "Chrome Extension boilerplate for manifest v3. With React.",
   "scripts": {
-    "start": "parcel watch src/manifest.json --host localhost",
+    "start": "parcel watch src/manifest.json src/recorder/recorder.html --host localhost",
     "prebuild": "rimraf dist .parcel-cache",
-    "build": "parcel build src/manifest.json --no-cache",
+    "build": "parcel build src/manifest.json src/recorder/recorder.html --no-cache",
     "postbuild": "node utils/remove-source-maps.mjs && node utils/create-zip.mjs",
     "release": "dotenv release-it --"
   },
@@ -41,6 +41,10 @@
     "zip-lib": "^1.0.5"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.1",
+    "@mui/material": "^6.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }

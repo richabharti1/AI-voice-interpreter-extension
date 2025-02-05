@@ -1,1 +1,1 @@
-console.log('Service worker');
+chrome.sidePanel.setPanelBehavior({openPanelOnActionClick: true});
