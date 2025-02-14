@@ -31,13 +31,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         mediaRecorder.onstop = () => {
             const audioBlob = new Blob(audioChunks, {type: 'audio/wav'});
             console.log('audioBlob', audioBlob);
+            // playAudio(audioBlob)
             transcribeSpeech(audioBlob);
         };
     }
 });
 
+// const playAudio = (audioBlob) => {
+//     const audioUrl = URL.createObjectURL(audioBlob);
+//     console.log('audio URL',audioUrl);
+//     if (audioUrl) {
+//         const audio = new Audio(audioUrl);
+//         audio.play()
+//             .then(() => {
+//                 console.log('Audio is playing');
+//             })
+//             .catch((error) => {
+//                 console.error('Error playing audio:', error);
+//             });
+//     }
+// };
+
 const transcribeSpeech = async (audioBlob) => {
-    // Prepare form data for the request
+
     const formData = new FormData();
     formData.append('file', audioBlob, 'audio.mp3');
     formData.append('model', 'whisper-1');
@@ -50,8 +66,7 @@ const transcribeSpeech = async (audioBlob) => {
         body: formData,
     });
 
-    // Parse and log the response
     const data = await response.json();
-    console.log('hello',data.text);
+    chrome.runtime.sendMessage({action: 'transcribedText', data: data.text});
 };
 

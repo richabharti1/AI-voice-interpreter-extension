@@ -1,6 +1,7 @@
 import {Box, Button} from '@mui/material';
 import {useState} from 'react';
 import ReactDom from 'react-dom/client';
+import getAudioFromText from './getAudioFromText';
 
 
 const styles = {
@@ -21,7 +22,7 @@ const styles = {
 };
 
 let createdWindowId;
-
+let textFromSpeech;
 const App = () => {
     const [startRecording, setStartRecording] = useState(false);
 
@@ -41,15 +42,29 @@ const App = () => {
                     console.log(createdWindowId, tabs[0].id);
                     const activeTab = tabs[0];
                     chrome.tabs.sendMessage(activeTab.id, {message: 'stopRecording'});
-                    console.log('hi')
+                    console.log('hi');
                 } else {
                     console.log('No active tab found in the window with ID', createdWindowId);
-                    console.log('hello')
+                    console.log('hello');
                 }
             });
         }
         setStartRecording(!startRecording);
 
+    };
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message.action === 'transcribedText') {
+            console.log('Received message:', message.data);
+            textFromSpeech = message.data;
+        }
+    });
+    const playAudio = () => {
+        console.log('textFromSpeech',textFromSpeech);
+        if (textFromSpeech) {
+            getAudioFromText(textFromSpeech);
+        } else {
+            console.log('no text to convert to speech');
+        }
     };
     return (
         <Box>
@@ -67,6 +82,7 @@ const App = () => {
                 <Button variant="contained" sx={{marginRight: '15px'}} onClick={toggleRecording}>start
                     recording</Button>
                 <Button variant="contained" onClick={toggleRecording}>stop recording</Button>
+                <Button variant="contained" onClick={playAudio}>Play Audio</Button>
             </Box>
         </Box>
     );
