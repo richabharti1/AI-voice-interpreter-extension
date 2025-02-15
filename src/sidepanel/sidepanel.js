@@ -1,4 +1,4 @@
-import {Box, Button} from '@mui/material';
+import {Box, Button, Typography} from '@mui/material';
 import {useState} from 'react';
 import ReactDom from 'react-dom/client';
 import getAudioFromText from './getAudioFromText';
@@ -22,9 +22,10 @@ const styles = {
 };
 
 let createdWindowId;
-let textFromSpeech;
+// let textFromSpeech;
 const App = () => {
     const [startRecording, setStartRecording] = useState(false);
+    const [textFromSpeech, setTextFromSpeech] = useState('');
 
     const toggleRecording = () => {
         if (startRecording === false) {
@@ -55,11 +56,12 @@ const App = () => {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message.action === 'transcribedText') {
             console.log('Received message:', message.data);
-            textFromSpeech = message.data;
+            setTextFromSpeech(message.data);
+            // textFromSpeech = message.data;
         }
     });
     const playAudio = () => {
-        console.log('textFromSpeech',textFromSpeech);
+        console.log('textFromSpeech', textFromSpeech);
         if (textFromSpeech) {
             getAudioFromText(textFromSpeech);
         } else {
@@ -76,13 +78,19 @@ const App = () => {
                 border: '1px solid #ddd',
                 boxShadow: 2,
             }}>
-
+                <Typography variant="body1" component="h1">
+                    {textFromSpeech}
+                </Typography>
             </Box>
-            <Box sx={{marginTop: '10px'}}>
-                <Button variant="contained" sx={{marginRight: '15px'}} onClick={toggleRecording}>start
-                    recording</Button>
-                <Button variant="contained" onClick={toggleRecording}>stop recording</Button>
-                <Button variant="contained" onClick={playAudio}>Play Audio</Button>
+            <Box sx={{marginTop: '10px', textAlign: 'center'}}>
+                <Box>
+                    <Button variant="contained" sx={{marginRight: '5px'}} onClick={toggleRecording}>start
+                        recording</Button>
+                    <Button variant="contained" onClick={toggleRecording}>stop recording</Button>
+                </Box>
+                <Box sx={{marginTop: '10px'}}>
+                    <Button variant="contained" onClick={playAudio}>Play Audio</Button>
+                </Box>
             </Box>
         </Box>
     );
