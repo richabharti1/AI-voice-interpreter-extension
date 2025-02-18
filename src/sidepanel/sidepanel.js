@@ -1,7 +1,9 @@
-import {Box, Button, Typography} from '@mui/material';
+import {Box, Button, CssBaseline, ThemeProvider, Typography} from '@mui/material';
 import {useState} from 'react';
 import ReactDom from 'react-dom/client';
+import theme from './appTheme';
 import getAudioFromText from './getAudioFromText';
+import './sidepanel.css';
 
 
 const styles = {
@@ -70,13 +72,14 @@ const App = () => {
     };
     return (
         <Box>
+            <Typography variant="h5" sx={{fontWeight:'bold'}}>GPT Voice Chat</Typography>
             <Box sx={{
-                width: 294,
+                background: 'white',
                 height: 231,
                 overflowY: 'auto', // Makes the content scrollable
-                padding: 2,
-                border: '1px solid #ddd',
-                boxShadow: 2,
+                padding: '16px',
+                borderRadius: '16px',
+                boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px',
             }}>
                 <Typography variant="body1" component="h1">
                     {textFromSpeech}
@@ -84,9 +87,11 @@ const App = () => {
             </Box>
             <Box sx={{marginTop: '10px', textAlign: 'center'}}>
                 <Box>
-                    <Button variant="contained" sx={{marginRight: '5px'}} onClick={toggleRecording}>start
+                    <Button variant="contained" disabled={startRecording === true} sx={{marginRight: '5px'}}
+                            onClick={toggleRecording}>start
                         recording</Button>
-                    <Button variant="contained" onClick={toggleRecording}>stop recording</Button>
+                    <Button variant="contained" disabled={startRecording === false} onClick={toggleRecording}>stop
+                        recording</Button>
                 </Box>
                 <Box sx={{marginTop: '10px'}}>
                     <Button variant="contained" onClick={playAudio}>Play Audio</Button>
@@ -97,4 +102,8 @@ const App = () => {
 };
 
 const root = ReactDom.createRoot(document.getElementById('root'));
-root.render(<App/>);
+root.render(
+    <ThemeProvider theme={theme}>
+        <App/>
+    </ThemeProvider>
+);
