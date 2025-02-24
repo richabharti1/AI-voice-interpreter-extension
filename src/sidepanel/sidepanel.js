@@ -97,7 +97,15 @@ const App = () => {
                 boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px',
                 marginTop: '10px',
             }}>
-                {startRecording === false && textFromSpeech !== '' && responseFromChatGpt === '' && <MoreHorizIcon/>}
+                {startRecording === false && textFromSpeech !== '' && responseFromChatGpt === '' && <MoreHorizIcon sx={{
+                    animation: 'flicker 1.5s infinite',
+                    animationDelay: '0.1s', // Staggered effect
+                    '@keyframes flicker': {
+                        '0%': {opacity: 0.2},
+                        '50%': {opacity: 1},
+                        '100%': {opacity: 0.2},
+                    },
+                }}/>}
                 <Typography variant="body1" component="h1">{responseFromChatGpt}</Typography>
             </Box>
         </Box>
