@@ -16,34 +16,34 @@ const App = () => {
     const [responseFromChatGpt, setResponseFromChatGpt] = useState('');
 
     const toggleRecording = () => {
-
-        if (startRecording === false) {
-            setTextFromSpeech('');
-            setResponseFromChatGpt('');
-            stopAudio();
-            chrome.windows.create({
-                width: 500,
-                height: 500,
-                type: 'panel',
-                url: chrome.runtime.getURL('recorder/recorder.html'),
-            }, (window) => {
-                createdWindowId = window.id;
-            });
-        } else {
-            chrome.tabs.query({windowId: createdWindowId, active: true}, (tabs) => {
-                if (tabs.length > 0) {
-                    console.log(createdWindowId, tabs[0].id);
-                    const activeTab = tabs[0];
-                    chrome.tabs.sendMessage(activeTab.id, {message: 'stopRecording'});
-                    console.log('hi');
-                } else {
-                    console.log('No active tab found in the window with ID', createdWindowId);
-                    console.log('hello');
-                }
-            });
-        }
-        setStartRecording(!startRecording);
-
+        setStartRecording(prevState => {
+            if (prevState === false) {
+                setTextFromSpeech('');
+                setResponseFromChatGpt('');
+                stopAudio();
+                chrome.windows.create({
+                    width: 500,
+                    height: 500,
+                    type: 'panel',
+                    url: chrome.runtime.getURL('recorder/recorder.html'),
+                }, (window) => {
+                    createdWindowId = window.id;
+                });
+            } else {
+                chrome.tabs.query({windowId: createdWindowId, active: true}, (tabs) => {
+                    if (tabs.length > 0) {
+                        console.log(createdWindowId, tabs[0].id);
+                        const activeTab = tabs[0];
+                        chrome.tabs.sendMessage(activeTab.id, {message: 'stopRecording'});
+                        console.log('hi');
+                    } else {
+                        console.log('No active tab found in the window with ID', createdWindowId);
+                        console.log('hello');
+                    }
+                });
+            }
+            return !prevState;
+        });
     };
 
     useEffect(() => {
