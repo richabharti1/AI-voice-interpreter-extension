@@ -2,7 +2,7 @@ import {Box, CssBaseline, IconButton, ThemeProvider, Typography} from '@mui/mate
 import {useEffect, useState} from 'react';
 import ReactDom from 'react-dom/client';
 import theme from './appTheme';
-import getAudioFromText from './getAudioFromText';
+import {getAudioFromText, stopAudio} from './getAudioFromText';
 import './sidepanel.css';
 import MicIcon from '@mui/icons-material/Mic';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -20,6 +20,7 @@ const App = () => {
         if (startRecording === false) {
             setTextFromSpeech('');
             setResponseFromChatGpt('');
+            stopAudio();
             chrome.windows.create({
                 width: 500,
                 height: 500,

@@ -1,4 +1,5 @@
 const openaiKey = process.env.OPEN_API_KEY;
+let audio = null;
 
 const getAudioFromText = async (text) => {
     // console.log('text',text);
@@ -19,7 +20,11 @@ const getAudioFromText = async (text) => {
         const audioData = await response.blob();
         const audioUrl = URL.createObjectURL(audioData);
         if (audioUrl) {
-            const audio = new Audio(audioUrl);
+            if (audio) {
+                audio.pause();  // Stop any previously playing audio
+                audio.src = "";  // Release the URL to free memory
+            }
+            audio = new Audio(audioUrl);
             audio.play()
                 .then(() => {
                     console.log('Audio is playing');
@@ -35,4 +40,13 @@ const getAudioFromText = async (text) => {
 
 };
 
-export default getAudioFromText;
+// Function to stop the audio
+const stopAudio = () => {
+    if (audio) {
+        audio.pause();
+        audio.src = ""; // Free up the resource
+        console.log("Audio stopped");
+    }
+};
+
+export { getAudioFromText, stopAudio };
