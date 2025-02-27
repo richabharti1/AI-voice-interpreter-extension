@@ -1,5 +1,5 @@
 import {Box, CssBaseline, IconButton, ThemeProvider, Typography} from '@mui/material';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import ReactDom from 'react-dom/client';
 import theme from './appTheme';
 import {getAudioFromText, stopAudio} from './getAudioFromText';
@@ -14,6 +14,7 @@ const App = () => {
     const [startRecording, setStartRecording] = useState(false);
     const [textFromSpeech, setTextFromSpeech] = useState('');
     const [responseFromChatGpt, setResponseFromChatGpt] = useState('');
+    const recordingIdRef = useRef(0);
 
     const toggleRecording = () => {
         setStartRecording(prevState => {
@@ -34,13 +35,17 @@ const App = () => {
                     if (tabs.length > 0) {
                         console.log(createdWindowId, tabs[0].id);
                         const activeTab = tabs[0];
-                        chrome.tabs.sendMessage(activeTab.id, {message: 'stopRecording'});
+                        chrome.tabs.sendMessage(activeTab.id, {message: 'stopRecording', id: recordingIdRef.current});
                         console.log('hi');
                     } else {
                         console.log('No active tab found in the window with ID', createdWindowId);
                         console.log('hello');
                     }
                 });
+            }
+            // Update id only if we just started a new recording
+            if (prevState == false) {
+                recordingIdRef.current = (recordingIdRef.current + 1)%100;
             }
             return !prevState;
         });
@@ -50,11 +55,20 @@ const App = () => {
         const handleMessage = (message, sender, sendResponse) => {
             if (message.action === 'transcribedText') {
                 console.log('Received message:', message.data);
-                setTextFromSpeech(message.data);
-                getResponseFromChatGpt(message.data).then(response => {
-                    setResponseFromChatGpt(response);
-                    getAudioFromText(response);
-                });
+                const processed_id = message.id;
+                if (processed_id === recordingIdRef.current) {
+                    setTextFromSpeech(message.data);
+                    getResponseFromChatGpt(message.data, processed_id).then(response => {
+                        if (response.id === recordingIdRef.current) {
+                            setResponseFromChatGpt(response.data);
+                            getAudioFromText(response.data);
+                        } else {
+                            console.log("Ignoring response because new recording started.");
+                        }
+                    });
+                } else {
+                    console.log("Ignoring response because new recording started.");
+                }
             }
         };
 

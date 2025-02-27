@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             const audioBlob = new Blob(audioChunks, {type: 'audio/wav'});
             console.log('audioBlob', audioBlob);
             // playAudio(audioBlob)
-            transcribeSpeech(audioBlob);
+            transcribeSpeech(audioBlob, message.id);
         };
     }
 });
@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 //     }
 // };
 
-const transcribeSpeech = async (audioBlob) => {
+const transcribeSpeech = async (audioBlob, recordingId) => {
 
     const formData = new FormData();
     formData.append('file', audioBlob, 'audio.mp3');
@@ -68,6 +68,6 @@ const transcribeSpeech = async (audioBlob) => {
     });
 
     const data = await response.json();
-    chrome.runtime.sendMessage({action: 'transcribedText', data: data.text});
+    chrome.runtime.sendMessage({action: 'transcribedText', data: data.text, id: recordingId});
 };
 
