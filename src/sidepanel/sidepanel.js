@@ -45,7 +45,7 @@ const App = () => {
             }
             // Update id only if we just started a new recording
             if (prevState == false) {
-                recordingIdRef.current = (recordingIdRef.current + 1)%100;
+                recordingIdRef.current = (recordingIdRef.current + 1) % 100;
             }
             return !prevState;
         });
@@ -63,11 +63,11 @@ const App = () => {
                             setResponseFromChatGpt(response.data);
                             getAudioFromText(response.data);
                         } else {
-                            console.log("Ignoring response because new recording started.");
+                            console.log('Ignoring response because new recording started.');
                         }
                     });
                 } else {
-                    console.log("Ignoring response because new recording started.");
+                    console.log('Ignoring response because new recording started.');
                 }
             }
         };
@@ -95,9 +95,9 @@ const App = () => {
             <Box sx={{marginTop: '10px', textAlign: 'center'}}>
                 <IconButton
                     sx={{
-                        background: startRecording ? '#FF0000' : '#00FF00',
+                        background: startRecording ? '#FF0000' : '#888888',
                         ':hover': {
-                            background: startRecording ? '#FFCCCC' : '#CCFFCC',
+                            background: startRecording ? '#FFCCCC' : '#BBBBBB',
                         },
                     }}
                     onClick={toggleRecording}
