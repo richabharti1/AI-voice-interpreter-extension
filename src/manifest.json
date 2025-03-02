@@ -1,16 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "AI-voice-interpreter-extension",
-  "description": "Extension Description",
+  "name": "chatgpt-voice-chat",
+  "description": "ChatGPT voice conversion extension",
   "version": "0.0.0",
   "icons": {
-    "16": "images/icon256.png?width=16",
-    "24": "images/icon256.png?width=24",
-    "32": "images/icon256.png?width=32",
-    "48": "images/icon256.png?width=48",
-    "64": "images/icon256.png?width=64",
-    "128": "images/icon256.png?width=128",
-    "256": "images/icon256.png"
+    "16": "images/icon512.png?width=16",
+    "24": "images/icon512.png?width=24",
+    "32": "images/icon512.png?width=32",
+    "48": "images/icon512.png?width=48",
+    "64": "images/icon512.png?width=64",
+    "128": "images/icon512.png?width=128",
+    "256": "images/icon512.png?width=256"
   },
   "background": {
     "service_worker": "background/index.js",

@@ -1,7 +1,7 @@
 {
-  "name": "mv3-parcel-webext-template",
-  "version": "0.0.0",
-  "description": "Chrome Extension boilerplate for manifest v3. With React.",
+  "name": "chatgpt-voice-chat",
+  "version": "1.0.0",
+  "description": "ChatGPT voice conversion extension.",
   "scripts": {
     "start": "parcel watch src/manifest.json src/recorder/recorder.html --host localhost",
     "prebuild": "rimraf dist .parcel-cache",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/onikienko/mv3-parcel-webext-template.git"
+    "url": "git+https://github.com/richabharti1/chatgpt-voice-chat.git"
   },
-  "author": "Mykhailo Onikiienko <michael.onikienko@gmail.com> (https://github.com/onikienko)",
+  "author": "Richa Bharti <richa.bharti1@gmail.com> (https://github.com/richabharti1)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/onikienko/mv3-parcel-webext-template/issues"
+    "url": "https://github.com/richabharti1/chatgpt-voice-chat/issues"
   },
-  "homepage": "https://github.com/onikienko/mv3-parcel-webext-template#readme",
+  "homepage": "https://github.com/richabharti1/chatgpt-voice-chat#readme",
   "devDependencies": {
     "@parcel/config-webextension": "^2.13.3",
     "@release-it/bumper": "^7.0.1",
