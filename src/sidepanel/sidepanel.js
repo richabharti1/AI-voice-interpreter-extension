@@ -10,6 +10,8 @@ import getResponseFromChatGpt from './getResponseFromChatGpt';
 
 
 let createdWindowId;
+let audio = null;
+
 const App = () => {
     const [startRecording, setStartRecording] = useState(false);
     const [textFromSpeech, setTextFromSpeech] = useState('');
@@ -51,6 +53,30 @@ const App = () => {
         });
     };
 
+    const playAudio = (audioUrl, responseId) => {
+        if (audioUrl && responseId === recordingIdRef.current) {
+            if (audio) {
+                audio.pause();  // Stop any previously playing audio
+                audio.src = '';  // Release the URL to free memory
+            }
+            audio = new Audio(audioUrl);
+            audio.play()
+                .then(() => {
+                    console.log('Audio is playing');
+                })
+                .catch((error) => {
+                    console.error('Error playing audio:', error);
+                });
+        }
+    };
+
+    const stopAudio = () => {
+        if (audio) {
+            audio.pause();
+            audio.src = ''; // Free up the resource
+            console.log('Audio stopped');
+        }
+    };
     useEffect(() => {
         const handleMessage = (message, sender, sendResponse) => {
             if (message.action === 'transcribedText') {
@@ -61,7 +87,7 @@ const App = () => {
                     getResponseFromChatGpt(message.data, processed_id).then(response => {
                         if (response.id === recordingIdRef.current) {
                             setResponseFromChatGpt(response.data);
-                            getAudioFromText(response.data);
+                            getAudioFromText(response.data).then(audioUrl => playAudio(audioUrl, response.id));
                         } else {
                             console.log('Ignoring response because new recording started.');
                         }
