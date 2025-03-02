@@ -11,6 +11,8 @@ This is a React based app, and uses the following ChatGPT APIs:
 
 The extension runs as a sidebar, which persists through various browser tabs.
 
+<img align="center" src="src/images/app_demo.png">
+
 ## Build and Run
 
 ### 1. Setup ChatGPT API Key
